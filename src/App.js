@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -9,7 +9,7 @@ function App() {
   const [isLoding, setIsLoding] = useState(false);
   const [error, setError] = useState(null);
 
-  async function fetchMoviesHandler () {
+  const fetchMoviesHandler = useCallback(async () =>{
     setIsLoding(true)
     setError(null);
     try {
@@ -33,7 +33,11 @@ function App() {
       setError(error.message);
     }
     setIsLoding(false);
-  }
+  },[]);
+
+  useEffect(()=>{               // useEffect always take two parametre and second parameter is awlays an array
+    fetchMoviesHandler ();
+  },[fetchMoviesHandler]);
 
   let content = <p>No Movies Found Click button to find some...</p>
 
